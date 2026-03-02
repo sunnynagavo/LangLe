@@ -1,0 +1,86 @@
+@page "/wordbank"
+@rendermode InteractiveServer
+@inject ApiClient Api
+
+<PageTitle>LangLe - Word Bank</PageTitle>
+
+<MudText Typo="Typo.h4" Class="mb-2" Style="font-weight:800;">📖 Word Bank</MudText>
+<MudText Typo="Typo.body1" Color="Color.Secondary" Class="mb-4">All the words you've learned — flip to see translations!</MudText>
+
+@if (_loading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="ma-auto d-block mt-8" />
+}
+else if (_words.Count == 0)
+{
+    <MudStack AlignItems="AlignItems.Center" Class="mt-8">
+        <MudText Typo="Typo.h2">📚</MudText>
+        <MudText Typo="Typo.h5" Color="Color.Secondary">No words learned yet!</MudText>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Href="/topics">Start Learning →</MudButton>
+    </MudStack>
+}
+else
+{
+    <!-- Search -->
+    <MudTextField @bind-Value="_searchTerm" Placeholder="Search words..." Variant="Variant.Outlined"
+                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search"
+                  Immediate="true" Class="mb-4" Style="max-width:400px;" />
+
+    <MudGrid>
+        @foreach (var word in FilteredWords)
+        {
+            <MudItem xs="6" sm="4" md="3">
+                <MudCard Elevation="3" Style="border-radius:16px; cursor:pointer; transition: transform 0.2s;"
+                         Class="word-card" @onclick="() => ToggleFlip(word.Id)">
+                    <MudCardContent Class="text-center pa-4">
+                        <MudText Typo="Typo.h2" Class="mb-2">@word.ImageUrl</MudText>
+                        @if (_flippedCards.Contains(word.Id))
+                        {
+                            <MudStack Spacing="1">
+                                <MudChip T="string" Color="Color.Primary" Size="Size.Small">🇺🇸 @word.English</MudChip>
+                                <MudChip T="string" Color="Color.Secondary" Size="Size.Small">🇪🇸 @word.Spanish</MudChip>
+                                <MudChip T="string" Color="Color.Tertiary" Size="Size.Small">🇮🇳 @word.Telugu</MudChip>
+                            </MudStack>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.h6" Style="font-weight:700;">@word.English</MudText>
+                            <MudText Typo="Typo.caption" Color="Color.Secondary">Tap to flip</MudText>
+                        }
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+}
+
+<style>
+    .word-card:hover {
+        transform: translateY(-4px) scale(1.03);
+        box-shadow: 0 8px 30px rgba(108,99,255,0.25) !important;
+    }
+</style>
+
+@code {
+    private List<WordBankEntryDto> _words = [];
+    private HashSet<int> _flippedCards = [];
+    private bool _loading = true;
+    private string _searchTerm = "";
+
+    private IEnumerable<WordBankEntryDto> FilteredWords => string.IsNullOrWhiteSpace(_searchTerm)
+        ? _words
+        : _words.Where(w => w.English.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)
+                         || w.Spanish.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase)
+                         || w.Telugu.Contains(_searchTerm, StringComparison.OrdinalIgnoreCase));
+
+    protected override async Task OnInitializedAsync()
+    {
+        _words = await Api.GetWordBankAsync();
+        _loading = false;
+    }
+
+    private void ToggleFlip(int id)
+    {
+        if (!_flippedCards.Remove(id)) _flippedCards.Add(id);
+    }
+}

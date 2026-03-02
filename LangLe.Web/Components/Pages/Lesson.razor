@@ -1,0 +1,243 @@
+@page "/lesson/{LessonId:int}"
+@rendermode InteractiveServer
+@inject ApiClient Api
+@inject NavigationManager Nav
+
+<PageTitle>LangLe - Lesson</PageTitle>
+
+@if (_loading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="ma-auto d-block mt-8" />
+}
+else if (_completed)
+{
+    <!-- LESSON COMPLETE SCREEN -->
+    <MudStack AlignItems="AlignItems.Center" Class="mt-8" Spacing="4">
+        <MudText Typo="Typo.h1">🎉</MudText>
+        <MudText Typo="Typo.h3" Style="font-weight:900;" Color="Color.Primary">Lesson Complete!</MudText>
+
+        <MudPaper Class="pa-6 text-center" Elevation="4" Style="border-radius:20px; max-width:500px; width:100%;">
+            <MudStack Spacing="3">
+                <MudStack Row="true" Justify="Justify.Center" Spacing="6">
+                    <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                        <MudText Typo="Typo.h4">💎</MudText>
+                        <MudText Typo="Typo.h4" Color="Color.Primary" Style="font-weight:900;">@(_result?.XpEarned ?? 0)</MudText>
+                        <MudText Typo="Typo.caption">XP Earned</MudText>
+                    </MudStack>
+                    <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                        <MudText Typo="Typo.h4">⭐</MudText>
+                        <MudText Typo="Typo.h4" Color="Color.Warning" Style="font-weight:900;">
+                            @(string.Concat(Enumerable.Repeat("⭐", _result?.Stars ?? 0)))
+                        </MudText>
+                        <MudText Typo="Typo.caption">Stars</MudText>
+                    </MudStack>
+                    <MudStack AlignItems="AlignItems.Center" Spacing="0">
+                        <MudText Typo="Typo.h4">🔥</MudText>
+                        <MudText Typo="Typo.h4" Color="Color.Secondary" Style="font-weight:900;">@(_result?.NewStreak ?? 0)</MudText>
+                        <MudText Typo="Typo.caption">Streak</MudText>
+                    </MudStack>
+                </MudStack>
+
+                @if (_result?.NewAchievements.Count > 0)
+                {
+                    <MudDivider />
+                    <MudText Typo="Typo.h6" Style="font-weight:700;">🏆 New Achievements!</MudText>
+                    @foreach (var a in _result.NewAchievements)
+                    {
+                        <MudChip T="string" Color="Color.Warning" Size="Size.Large">@a</MudChip>
+                    }
+                }
+
+                @if (_result?.NewWords.Count > 0)
+                {
+                    <MudDivider />
+                    <MudText Typo="Typo.h6" Style="font-weight:700;">📖 Words Learned</MudText>
+                    <MudStack Row="true" Justify="Justify.Center" Wrap="Wrap.Wrap">
+                        @foreach (var w in _result.NewWords)
+                        {
+                            <MudChip T="string" Color="Color.Primary" Variant="Variant.Outlined">
+                                @w.ImageUrl @w.English / @w.Spanish / @w.Telugu
+                            </MudChip>
+                        }
+                    </MudStack>
+                }
+            </MudStack>
+        </MudPaper>
+
+        <MudStack Row="true" Spacing="3">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Href="/topics"
+                       StartIcon="@Icons.Material.Filled.ArrowBack">Back to Topics</MudButton>
+            <MudButton Variant="Variant.Filled" Color="Color.Success" Size="Size.Large" Href="/"
+                       StartIcon="@Icons.Material.Filled.Dashboard">Dashboard</MudButton>
+        </MudStack>
+    </MudStack>
+}
+else if (_exercises.Count > 0)
+{
+    <!-- EXERCISE FLOW -->
+    var ex = _exercises[_currentIndex];
+
+    <MudStack Spacing="4">
+        <!-- Progress -->
+        <MudProgressLinear Color="Color.Primary" Value="@(_currentIndex * 100.0 / _exercises.Count)"
+                           Rounded="true" Size="Size.Large">
+            <MudText Typo="Typo.body2" Style="font-weight:700;">@(_currentIndex + 1) / @_exercises.Count</MudText>
+        </MudProgressLinear>
+
+        <!-- Exercise Card -->
+        <MudPaper Class="pa-6" Elevation="4" Style="border-radius:20px; min-height:350px;">
+            <MudStack AlignItems="AlignItems.Center" Spacing="4">
+                <!-- Type badge -->
+                <MudChip T="string" Color="Color.Primary" Size="Size.Small">
+                    @GetTypeEmoji(ex.Type) @ex.Type
+                </MudChip>
+
+                <!-- Question -->
+                @if (!string.IsNullOrEmpty(ex.ImageUrl))
+                {
+                    <MudText Typo="Typo.h1">@ex.ImageUrl</MudText>
+                }
+                <MudText Typo="Typo.h5" Align="Align.Center" Style="font-weight:700;">@ex.Question</MudText>
+
+                <!-- Hint -->
+                @if (!string.IsNullOrEmpty(ex.HintText) && _showHint)
+                {
+                    <MudAlert Severity="Severity.Info" Dense="true">💡 @ex.HintText</MudAlert>
+                }
+
+                <!-- Answer area -->
+                @if (ex.Options.Count > 0)
+                {
+                    <!-- Multiple choice -->
+                    <MudGrid Justify="Justify.Center">
+                        @foreach (var option in ex.Options)
+                        {
+                            var isSelected = _selectedAnswer == option;
+                            var isCorrect = _answered && option == ex.CorrectAnswer;
+                            var isWrong = _answered && isSelected && option != ex.CorrectAnswer;
+
+                            <MudItem xs="6">
+                                <MudButton Variant="@(isSelected ? Variant.Filled : Variant.Outlined)"
+                                           Color="@(isCorrect ? Color.Success : isWrong ? Color.Error : Color.Primary)"
+                                           FullWidth="true" Size="Size.Large"
+                                           OnClick="@(() => SelectAnswer(option))"
+                                           Disabled="_answered"
+                                           Style="font-weight:600; border-radius:14px; min-height:56px; font-size:1.1rem;">
+                                    @option
+                                </MudButton>
+                            </MudItem>
+                        }
+                    </MudGrid>
+                }
+                else
+                {
+                    <!-- Text input -->
+                    <MudTextField @bind-Value="_typedAnswer" Label="Type your answer" Variant="Variant.Outlined"
+                                  Disabled="_answered" Style="max-width:400px; width:100%;"
+                                  OnKeyDown="HandleKeyDown" />
+                    @if (!_answered)
+                    {
+                        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="SubmitTypedAnswer"
+                                   Disabled="string.IsNullOrWhiteSpace(_typedAnswer)">
+                            Check ✓
+                        </MudButton>
+                    }
+                }
+
+                <!-- Feedback -->
+                @if (_answered)
+                {
+                    <MudAlert Severity="@(_isCorrect ? Severity.Success : Severity.Error)" Class="mt-2"
+                              Style="border-radius:12px; font-weight:600;">
+                        @(_isCorrect ? "✅ Correct! Great job!" : $"❌ The answer was: {ex.CorrectAnswer}")
+                    </MudAlert>
+
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large"
+                               OnClick="NextExercise" Style="font-weight:700;">
+                        @(_currentIndex < _exercises.Count - 1 ? "Next →" : "Finish Lesson 🎉")
+                    </MudButton>
+                }
+                else if (!string.IsNullOrEmpty(ex.HintText) && !_showHint)
+                {
+                    <MudButton Variant="Variant.Text" Color="Color.Info" OnClick="@(() => _showHint = true)">
+                        💡 Show Hint
+                    </MudButton>
+                }
+            </MudStack>
+        </MudPaper>
+    </MudStack>
+}
+
+@code {
+    [Parameter] public int LessonId { get; set; }
+
+    private List<ExerciseDto> _exercises = [];
+    private int _currentIndex;
+    private bool _loading = true;
+    private bool _completed;
+    private bool _answered;
+    private bool _isCorrect;
+    private bool _showHint;
+    private string? _selectedAnswer;
+    private string _typedAnswer = "";
+    private int _correctCount;
+    private LessonCompleteResponse? _result;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _exercises = await Api.GetExercisesAsync(LessonId);
+        _loading = false;
+    }
+
+    private void SelectAnswer(string answer)
+    {
+        if (_answered) return;
+        _selectedAnswer = answer;
+        _answered = true;
+        _isCorrect = answer == _exercises[_currentIndex].CorrectAnswer;
+        if (_isCorrect) _correctCount++;
+    }
+
+    private void SubmitTypedAnswer()
+    {
+        if (_answered) return;
+        _answered = true;
+        _isCorrect = _typedAnswer.Trim().Equals(_exercises[_currentIndex].CorrectAnswer, StringComparison.OrdinalIgnoreCase);
+        if (_isCorrect) _correctCount++;
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !_answered && !string.IsNullOrWhiteSpace(_typedAnswer))
+            SubmitTypedAnswer();
+    }
+
+    private async Task NextExercise()
+    {
+        if (_currentIndex < _exercises.Count - 1)
+        {
+            _currentIndex++;
+            _answered = false;
+            _isCorrect = false;
+            _selectedAnswer = null;
+            _typedAnswer = "";
+            _showHint = false;
+        }
+        else
+        {
+            _result = await Api.CompleteLessonAsync(
+                new LessonCompleteRequest(LessonId, _correctCount, _exercises.Count));
+            _completed = true;
+        }
+    }
+
+    private string GetTypeEmoji(ExerciseType type) => type switch
+    {
+        ExerciseType.PictureMatch => "📸",
+        ExerciseType.TranslateSentence => "📝",
+        ExerciseType.FillInTheBlank => "🧩",
+        ExerciseType.WordScramble => "🔤",
+        ExerciseType.TriFlipChallenge => "🔄",
+        _ => "📝"
+    };
+}

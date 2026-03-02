@@ -1,0 +1,102 @@
+@page "/topics"
+@rendermode InteractiveServer
+@inject ApiClient Api
+
+<PageTitle>LangLe - Topics</PageTitle>
+
+<MudText Typo="Typo.h4" Class="mb-4" Style="font-weight:800;">📚 Learning Topics</MudText>
+<MudText Typo="Typo.body1" Color="Color.Secondary" Class="mb-6">Choose a topic and start learning!</MudText>
+
+@if (_loading)
+{
+    <MudGrid>
+        @for (int i = 0; i < 6; i++)
+        {
+            <MudItem xs="12" sm="6" md="4">
+                <MudSkeleton SkeletonType="SkeletonType.Rectangle" Height="180px" Style="border-radius:16px;" />
+            </MudItem>
+        }
+    </MudGrid>
+}
+else
+{
+    <MudGrid>
+        @foreach (var topic in _topics)
+        {
+            <MudItem xs="12" sm="6" md="4">
+                <MudCard Elevation="4" Style="border-radius:20px; overflow:hidden; cursor:pointer; transition: transform 0.2s;"
+                         Class="topic-card" @onclick="() => SelectTopic(topic)">
+                    <MudCardContent Class="text-center pa-5">
+                        <MudText Typo="Typo.h2" Class="mb-2">@topic.IconEmoji</MudText>
+                        <MudText Typo="Typo.h5" Style="font-weight:800;">@topic.Name</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-3">@topic.Description</MudText>
+                        <MudProgressLinear Color="@(topic.ProgressPercent >= 100 ? Color.Success : Color.Primary)"
+                                           Value="@topic.ProgressPercent" Rounded="true" Size="Size.Large" Class="mb-2">
+                            <MudText Typo="Typo.body2" Style="font-weight:700;">
+                                @($"{topic.ProgressPercent:0}%")
+                            </MudText>
+                        </MudProgressLinear>
+                        <MudText Typo="Typo.caption">@topic.CompletedLessons / @topic.TotalLessons lessons</MudText>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        }
+    </MudGrid>
+
+    <!-- Lesson drawer -->
+    <MudDrawer @bind-Open="_lessonDrawerOpen" Anchor="Anchor.End" Elevation="4" Width="400px">
+        @if (_selectedTopic != null)
+        {
+            <MudDrawerHeader>
+                <MudStack>
+                    <MudText Typo="Typo.h4">@_selectedTopic.IconEmoji @_selectedTopic.Name</MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Secondary">@_selectedTopic.Description</MudText>
+                </MudStack>
+            </MudDrawerHeader>
+            <MudList T="LessonDto" Class="pa-2">
+                @foreach (var lesson in _lessons)
+                {
+                    <MudListItem T="LessonDto" Href="@($"/lesson/{lesson.Id}")"
+                                 Icon="@(lesson.IsCompleted ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.PlayCircleFilled)"
+                                 IconColor="@(lesson.IsCompleted ? Color.Success : Color.Primary)">
+                        <MudStack Row="true" AlignItems="AlignItems.Center">
+                            <MudText Style="font-weight:600;">@lesson.Title</MudText>
+                            <MudSpacer />
+                            <MudChip T="string" Size="Size.Small" Color="@(lesson.IsCompleted ? Color.Success : Color.Default)">
+                                @(lesson.IsCompleted ? "✅ Done" : $"{lesson.ExerciseCount} exercises")
+                            </MudChip>
+                        </MudStack>
+                    </MudListItem>
+                }
+            </MudList>
+        }
+    </MudDrawer>
+}
+
+<style>
+    .topic-card:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: 0 12px 40px rgba(108,99,255,0.3) !important;
+    }
+</style>
+
+@code {
+    private List<TopicDto> _topics = [];
+    private List<LessonDto> _lessons = [];
+    private TopicDto? _selectedTopic;
+    private bool _loading = true;
+    private bool _lessonDrawerOpen;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _topics = await Api.GetTopicsAsync();
+        _loading = false;
+    }
+
+    private async Task SelectTopic(TopicDto topic)
+    {
+        _selectedTopic = topic;
+        _lessons = await Api.GetLessonsAsync(topic.Id);
+        _lessonDrawerOpen = true;
+    }
+}

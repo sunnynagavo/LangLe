@@ -1,0 +1,77 @@
+﻿@inherits LayoutComponentBase
+
+<MudThemeProvider Theme="_theme" IsDarkMode="_isDarkMode" />
+<MudPopoverProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+<MudLayout>
+    <MudAppBar Color="Color.Primary" Fixed="true" Elevation="4">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start"
+                       OnClick="ToggleDrawer" />
+        <MudText Typo="Typo.h5" Class="ml-2" Style="font-weight:800; font-family:'Nunito',sans-serif;">
+            🦜 LangLe
+        </MudText>
+        <MudSpacer />
+        <MudChip T="string" Color="Color.Secondary" Size="Size.Small">🔥 Streak</MudChip>
+        <MudIconButton Icon="@(_isDarkMode ? Icons.Material.Filled.LightMode : Icons.Material.Filled.DarkMode)"
+                       Color="Color.Inherit" OnClick="ToggleDarkMode" />
+    </MudAppBar>
+
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <NavMenu />
+    </MudDrawer>
+
+    <MudMainContent Class="pt-16 pa-4">
+        <MudContainer MaxWidth="MaxWidth.Large">
+            @Body
+        </MudContainer>
+    </MudMainContent>
+</MudLayout>
+
+@code {
+    private bool _drawerOpen = true;
+    private bool _isDarkMode;
+
+    private MudTheme _theme = new()
+    {
+        PaletteLight = new PaletteLight
+        {
+            Primary = "#6C63FF",
+            Secondary = "#FF6584",
+            Tertiary = "#00BFA6",
+            AppbarBackground = "#6C63FF",
+            Background = "#F5F5FF",
+            Surface = "#FFFFFF",
+            DrawerBackground = "#FFFFFF",
+            Success = "#00BFA6",
+            Warning = "#FFB347",
+            Error = "#FF6B6B",
+            Info = "#4FC3F7"
+        },
+        PaletteDark = new PaletteDark
+        {
+            Primary = "#7C74FF",
+            Secondary = "#FF6584",
+            Tertiary = "#00BFA6",
+            AppbarBackground = "#2D2B55",
+            Background = "#1A1A2E",
+            Surface = "#2D2B55",
+            DrawerBackground = "#2D2B55",
+            Success = "#00BFA6",
+            Warning = "#FFB347",
+            Error = "#FF6B6B"
+        },
+        Typography = new Typography
+        {
+            Default = new DefaultTypography { FontFamily = ["Nunito", "Helvetica", "Arial", "sans-serif"] }
+        },
+        LayoutProperties = new LayoutProperties
+        {
+            DefaultBorderRadius = "12px"
+        }
+    };
+
+    private void ToggleDrawer() => _drawerOpen = !_drawerOpen;
+    private void ToggleDarkMode() => _isDarkMode = !_isDarkMode;
+}

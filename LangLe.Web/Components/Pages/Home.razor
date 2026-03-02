@@ -1,0 +1,136 @@
+﻿@page "/"
+@rendermode InteractiveServer
+@inject ApiClient Api
+
+<PageTitle>LangLe - Dashboard</PageTitle>
+
+@if (_loading)
+{
+    <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="ma-auto d-block mt-8" />
+}
+else if (_dashboard == null)
+{
+    <MudStack AlignItems="AlignItems.Center" Class="mt-8">
+        <MudText Typo="Typo.h3" Style="font-weight:900;">🦜 Welcome to LangLe!</MudText>
+        <MudText Typo="Typo.h6" Color="Color.Secondary">Learn Spanish & Telugu the fun way</MudText>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" Href="/login" Class="mt-4"
+                   StartIcon="@Icons.Material.Filled.Login">
+            Login to Start Learning
+        </MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Primary" Size="Size.Large" Href="/topics" Class="mt-2"
+                   StartIcon="@Icons.Material.Filled.Explore">
+            Browse Topics
+        </MudButton>
+    </MudStack>
+}
+else
+{
+    <MudText Typo="Typo.h4" Class="mb-4" Style="font-weight:800;">📊 Your Dashboard</MudText>
+
+    <MudGrid>
+        <!-- Streak Card -->
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="pa-4 text-center" Elevation="3" Style="border-radius:16px;">
+                <MudText Typo="Typo.h3">🔥</MudText>
+                <MudText Typo="Typo.h4" Color="Color.Secondary" Style="font-weight:900;">@_dashboard.CurrentStreak</MudText>
+                <MudText Typo="Typo.body2">Day Streak</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <!-- XP Card -->
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="pa-4 text-center" Elevation="3" Style="border-radius:16px;">
+                <MudText Typo="Typo.h3">💎</MudText>
+                <MudText Typo="Typo.h4" Color="Color.Primary" Style="font-weight:900;">@_dashboard.TotalXp</MudText>
+                <MudText Typo="Typo.body2">Total XP</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <!-- Words Card -->
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="pa-4 text-center" Elevation="3" Style="border-radius:16px;">
+                <MudText Typo="Typo.h3">📚</MudText>
+                <MudText Typo="Typo.h4" Color="Color.Tertiary" Style="font-weight:900;">@_dashboard.WordsLearned</MudText>
+                <MudText Typo="Typo.body2">Words Learned</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <!-- Level Card -->
+        <MudItem xs="6" sm="3">
+            <MudPaper Class="pa-4 text-center" Elevation="3" Style="border-radius:16px;">
+                <MudText Typo="Typo.h3">⭐</MudText>
+                <MudText Typo="Typo.h5" Color="Color.Warning" Style="font-weight:900;">@_dashboard.CurrentLevel</MudText>
+                <MudText Typo="Typo.body2">Level</MudText>
+            </MudPaper>
+        </MudItem>
+
+        <!-- Suggested Lesson -->
+        @if (_dashboard.SuggestedLesson != null)
+        {
+            <MudItem xs="12">
+                <MudPaper Class="pa-5" Elevation="3" Style="border-radius:16px; background: linear-gradient(135deg, #6C63FF 0%, #00BFA6 100%);">
+                    <MudStack Row="true" AlignItems="AlignItems.Center">
+                        <MudText Typo="Typo.h3">@_dashboard.SuggestedLesson.TopicEmoji</MudText>
+                        <MudStack Spacing="0">
+                            <MudText Typo="Typo.h6" Style="color:white; font-weight:800;">Continue Learning</MudText>
+                            <MudText Style="color:rgba(255,255,255,0.8);">@_dashboard.SuggestedLesson.TopicName — @_dashboard.SuggestedLesson.LessonTitle</MudText>
+                        </MudStack>
+                        <MudSpacer />
+                        <MudButton Variant="Variant.Filled" Color="Color.Warning" Size="Size.Large"
+                                   Href="@($"/lesson/{_dashboard.SuggestedLesson.LessonId}")"
+                                   Style="font-weight:700;">
+                            Start →
+                        </MudButton>
+                    </MudStack>
+                </MudPaper>
+            </MudItem>
+        }
+
+        <!-- Weekly XP Chart -->
+        <MudItem xs="12" md="8">
+            <MudPaper Class="pa-4" Elevation="3" Style="border-radius:16px;">
+                <MudText Typo="Typo.h6" Class="mb-2" Style="font-weight:700;">📈 This Week</MudText>
+                <MudChart ChartType="ChartType.Bar" ChartSeries="@_weeklyChartData" XAxisLabels="@_weeklyLabels"
+                          Width="100%" Height="250px" ChartOptions="_chartOptions" />
+            </MudPaper>
+        </MudItem>
+
+        <!-- Achievements -->
+        <MudItem xs="12" md="4">
+            <MudPaper Class="pa-4" Elevation="3" Style="border-radius:16px;">
+                <MudText Typo="Typo.h6" Class="mb-2" Style="font-weight:700;">🏆 Recent Achievements</MudText>
+                @if (_dashboard.RecentAchievements.Count == 0)
+                {
+                    <MudText Color="Color.Secondary">Complete lessons to earn badges!</MudText>
+                }
+                @foreach (var a in _dashboard.RecentAchievements)
+                {
+                    <MudChip T="string" Color="Color.Warning" Size="Size.Medium" Class="ma-1">@a.IconEmoji @a.Name</MudChip>
+                }
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+}
+
+@code {
+    private DashboardDto? _dashboard;
+    private bool _loading = true;
+    private List<ChartSeries<double>> _weeklyChartData = [];
+    private string[] _weeklyLabels = [];
+    private ChartOptions _chartOptions = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            _dashboard = await Api.GetDashboardAsync();
+            if (_dashboard != null)
+            {
+                _weeklyLabels = _dashboard.WeeklyXp.Select(w => w.DayLabel).ToArray();
+                _weeklyChartData = [new ChartSeries<double> { Name = "XP", Data = _dashboard.WeeklyXp.Select(w => (double)w.Xp).ToArray() }];
+            }
+        }
+        catch { }
+        _loading = false;
+    }
+}

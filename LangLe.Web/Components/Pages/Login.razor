@@ -1,0 +1,83 @@
+@page "/login"
+@page "/register"
+@rendermode InteractiveServer
+@inject ApiClient Api
+@inject NavigationManager Nav
+
+<PageTitle>LangLe - @(_isRegister ? "Register" : "Login")</PageTitle>
+
+<MudStack AlignItems="AlignItems.Center" Class="mt-8">
+    <MudText Typo="Typo.h2" Style="font-weight:900;">🦜</MudText>
+    <MudText Typo="Typo.h4" Style="font-weight:800;">@(_isRegister ? "Join LangLe!" : "Welcome Back!")</MudText>
+    <MudText Typo="Typo.body1" Color="Color.Secondary" Class="mb-4">@(_isRegister ? "Start your language journey" : "Continue learning")</MudText>
+
+    <MudPaper Class="pa-6" Elevation="4" Style="border-radius:20px; max-width:420px; width:100%;">
+        <MudStack Spacing="3">
+            @if (_isRegister)
+            {
+                <MudTextField @bind-Value="_displayName" Label="Display Name" Variant="Variant.Outlined"
+                              Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Person" />
+            }
+            <MudTextField @bind-Value="_email" Label="Email" Variant="Variant.Outlined" InputType="InputType.Email"
+                          Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Email" />
+            <MudTextField @bind-Value="_password" Label="Password" Variant="Variant.Outlined"
+                          InputType="InputType.Password" Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Material.Filled.Lock" />
+
+            @if (!string.IsNullOrEmpty(_error))
+            {
+                <MudAlert Severity="Severity.Error" Dense="true">@_error</MudAlert>
+            }
+
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" Size="Size.Large" FullWidth="true"
+                       OnClick="Submit" Disabled="_submitting"
+                       Style="font-weight:700; font-size:1.1rem; border-radius:12px;">
+                @if (_submitting)
+                {
+                    <MudProgressCircular Size="Size.Small" Indeterminate="true" Color="Color.Inherit" Class="mr-2" />
+                }
+                @(_isRegister ? "Create Account 🚀" : "Login 🔓")
+            </MudButton>
+
+            <MudButton Variant="Variant.Text" Color="Color.Primary"
+                       OnClick="@(() => Nav.NavigateTo(_isRegister ? "/login" : "/register"))">
+                @(_isRegister ? "Already have an account? Login" : "No account? Register")
+            </MudButton>
+        </MudStack>
+    </MudPaper>
+</MudStack>
+
+@code {
+    private string _email = "";
+    private string _password = "";
+    private string _displayName = "";
+    private string? _error;
+    private bool _submitting;
+    private bool _isRegister => Nav.Uri.Contains("/register", StringComparison.OrdinalIgnoreCase);
+
+    private async Task Submit()
+    {
+        _error = null;
+        _submitting = true;
+
+        try
+        {
+            AuthResponse? result;
+            if (_isRegister)
+                result = await Api.RegisterAsync(new RegisterRequest(_email, _password, _displayName));
+            else
+                result = await Api.LoginAsync(new LoginRequest(_email, _password));
+
+            if (result?.Success == true)
+                Nav.NavigateTo("/", forceLoad: true);
+            else
+                _error = result?.Error ?? "Something went wrong";
+        }
+        catch (Exception ex)
+        {
+            _error = ex.Message;
+        }
+
+        _submitting = false;
+    }
+}
