@@ -1,6 +1,7 @@
 @page "/topics"
 @rendermode InteractiveServer
 @inject ApiClient Api
+@inject IDialogService DialogService
 
 <PageTitle>LangLe - Topics</PageTitle>
 
@@ -23,60 +24,70 @@ else
     <MudGrid>
         @foreach (var topic in _topics)
         {
+            var t = topic;
             <MudItem xs="12" sm="6" md="4">
                 <MudCard Elevation="4" Style="border-radius:20px; overflow:hidden; cursor:pointer; transition: transform 0.2s;"
-                         Class="topic-card" @onclick="() => SelectTopic(topic)">
+                         Class="topic-card" @onclick="() => SelectTopic(t)">
                     <MudCardContent Class="text-center pa-5">
-                        <MudText Typo="Typo.h2" Class="mb-2">@topic.IconEmoji</MudText>
-                        <MudText Typo="Typo.h5" Style="font-weight:800;">@topic.Name</MudText>
-                        <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-3">@topic.Description</MudText>
-                        <MudProgressLinear Color="@(topic.ProgressPercent >= 100 ? Color.Success : Color.Primary)"
-                                           Value="@topic.ProgressPercent" Rounded="true" Size="Size.Large" Class="mb-2">
+                        <MudText Typo="Typo.h2" Class="mb-2">@t.IconEmoji</MudText>
+                        <MudText Typo="Typo.h5" Style="font-weight:800;">@t.Name</MudText>
+                        <MudText Typo="Typo.body2" Color="Color.Secondary" Class="mb-3">@t.Description</MudText>
+                        <MudProgressLinear Color="@(t.ProgressPercent >= 100 ? Color.Success : Color.Primary)"
+                                           Value="@t.ProgressPercent" Rounded="true" Size="Size.Large" Class="mb-2">
                             <MudText Typo="Typo.body2" Style="font-weight:700;">
-                                @($"{topic.ProgressPercent:0}%")
+                                @($"{t.ProgressPercent:0}%")
                             </MudText>
                         </MudProgressLinear>
-                        <MudText Typo="Typo.caption">@topic.CompletedLessons / @topic.TotalLessons lessons</MudText>
+                        <MudText Typo="Typo.caption">@t.CompletedLessons / @t.TotalLessons lessons</MudText>
                     </MudCardContent>
                 </MudCard>
             </MudItem>
         }
     </MudGrid>
 
-    <!-- Lesson drawer -->
-    <MudDrawer @bind-Open="_lessonDrawerOpen" Anchor="Anchor.End" Elevation="4" Width="400px">
-        @if (_selectedTopic != null)
-        {
-            <MudDrawerHeader>
-                <MudStack>
-                    <MudText Typo="Typo.h4">@_selectedTopic.IconEmoji @_selectedTopic.Name</MudText>
-                    <MudText Typo="Typo.body2" Color="Color.Secondary">@_selectedTopic.Description</MudText>
+    @if (_selectedTopic != null && _showLessons)
+    {
+        <MudOverlay Visible="true" DarkBackground="true" OnClick="CloseLessons" ZIndex="1200" />
+        <div style="position:fixed; top:0; right:0; width:420px; max-width:90vw; height:100vh; z-index:1300;
+                    background:var(--mud-palette-surface); box-shadow:-4px 0 24px rgba(0,0,0,0.25);
+                    display:flex; flex-direction:column; animation: slideIn 0.25s ease-out;">
+            <div style="padding:20px 24px; border-bottom:1px solid var(--mud-palette-lines-default);">
+                <MudStack Row="true" AlignItems="AlignItems.Center" Justify="Justify.SpaceBetween">
+                    <MudText Typo="Typo.h5" Style="font-weight:800;">@_selectedTopic.IconEmoji @_selectedTopic.Name</MudText>
+                    <MudIconButton Icon="@Icons.Material.Filled.Close" OnClick="CloseLessons" />
                 </MudStack>
-            </MudDrawerHeader>
-            <MudList T="LessonDto" Class="pa-2">
-                @foreach (var lesson in _lessons)
-                {
-                    <MudListItem T="LessonDto" Href="@($"/lesson/{lesson.Id}")"
-                                 Icon="@(lesson.IsCompleted ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.PlayCircleFilled)"
-                                 IconColor="@(lesson.IsCompleted ? Color.Success : Color.Primary)">
-                        <MudStack Row="true" AlignItems="AlignItems.Center">
-                            <MudText Style="font-weight:600;">@lesson.Title</MudText>
-                            <MudSpacer />
-                            <MudChip T="string" Size="Size.Small" Color="@(lesson.IsCompleted ? Color.Success : Color.Default)">
-                                @(lesson.IsCompleted ? "✅ Done" : $"{lesson.ExerciseCount} exercises")
-                            </MudChip>
-                        </MudStack>
-                    </MudListItem>
-                }
-            </MudList>
-        }
-    </MudDrawer>
+                <MudText Typo="Typo.body2" Color="Color.Secondary">@_selectedTopic.Description</MudText>
+            </div>
+            <div style="overflow-y:auto; flex:1; padding:8px 16px;">
+                <MudList T="LessonDto">
+                    @foreach (var lesson in _lessons)
+                    {
+                        <MudListItem T="LessonDto" Href="@($"/lesson/{lesson.Id}")"
+                                     Icon="@(lesson.IsCompleted ? Icons.Material.Filled.CheckCircle : Icons.Material.Filled.PlayCircleFilled)"
+                                     IconColor="@(lesson.IsCompleted ? Color.Success : Color.Primary)">
+                            <MudStack Row="true" AlignItems="AlignItems.Center">
+                                <MudText Style="font-weight:600;">@lesson.Title</MudText>
+                                <MudSpacer />
+                                <MudChip T="string" Size="Size.Small" Color="@(lesson.IsCompleted ? Color.Success : Color.Default)">
+                                    @(lesson.IsCompleted ? "✅ Done" : $"{lesson.ExerciseCount} exercises")
+                                </MudChip>
+                            </MudStack>
+                        </MudListItem>
+                    }
+                </MudList>
+            </div>
+        </div>
+    }
 }
 
 <style>
     .topic-card:hover {
         transform: translateY(-6px) scale(1.02);
         box-shadow: 0 12px 40px rgba(108,99,255,0.3) !important;
+    }
+    @@keyframes slideIn {
+        from { transform: translateX(100%); }
+        to { transform: translateX(0); }
     }
 </style>
 
@@ -85,7 +96,7 @@ else
     private List<LessonDto> _lessons = [];
     private TopicDto? _selectedTopic;
     private bool _loading = true;
-    private bool _lessonDrawerOpen;
+    private bool _showLessons;
 
     protected override async Task OnInitializedAsync()
     {
@@ -97,6 +108,11 @@ else
     {
         _selectedTopic = topic;
         _lessons = await Api.GetLessonsAsync(topic.Id);
-        _lessonDrawerOpen = true;
+        _showLessons = true;
+    }
+
+    private void CloseLessons()
+    {
+        _showLessons = false;
     }
 }

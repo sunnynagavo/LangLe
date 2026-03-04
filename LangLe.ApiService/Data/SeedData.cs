@@ -313,65 +313,135 @@ public static class SeedData
         (string En, string Es, string Te, string? Img)[] words, string topicName)
     {
         var lessons = new List<Lesson>();
-        int wordsPerLesson = 2;
+        int wordsPerLesson = 4;
         int lessonIndex = 0;
+
+        // All exercise generators
+        var exerciseGenerators = new List<Func<(string En, string Es, string Te, string? Img), (string En, string Es, string Te, string? Img)[], Exercise>>
+        {
+            // PictureMatch: show emoji, pick correct Spanish
+            (w, all) =>
+            {
+                var wrong = all.Where(x => x.En != w.En).OrderBy(_ => Random.Shared.Next()).Take(3).Select(x => x.Es).ToList();
+                wrong.Add(w.Es);
+                return new Exercise
+                {
+                    Type = ExerciseType.PictureMatch,
+                    Question = $"{w.Img} What is this in Spanish?",
+                    CorrectAnswer = w.Es,
+                    OptionsJson = JsonSerializer.Serialize(wrong.OrderBy(_ => Random.Shared.Next())),
+                    ImageUrl = w.Img,
+                    HintText = w.En
+                };
+            },
+            // TranslateSentence: En → Es (multiple choice)
+            (w, all) =>
+            {
+                var wrong = all.Where(x => x.En != w.En).OrderBy(_ => Random.Shared.Next()).Take(3).Select(x => x.Es).ToList();
+                wrong.Add(w.Es);
+                return new Exercise
+                {
+                    Type = ExerciseType.TranslateSentence,
+                    Question = $"Translate to Spanish: \"{w.En}\"",
+                    CorrectAnswer = w.Es,
+                    OptionsJson = JsonSerializer.Serialize(wrong.OrderBy(_ => Random.Shared.Next()))
+                };
+            },
+            // FillInTheBlank: type Spanish
+            (w, _) => new Exercise
+            {
+                Type = ExerciseType.FillInTheBlank,
+                Question = $"The Spanish word for \"{w.En}\" is ____",
+                CorrectAnswer = w.Es,
+                OptionsJson = "[]",
+                HintText = $"Starts with '{w.Es[0]}'"
+            },
+            // TriFlipChallenge: Telugu → Spanish
+            (w, _) => new Exercise
+            {
+                Type = ExerciseType.TriFlipChallenge,
+                Question = $"🇮🇳 Telugu: {w.Te} → What is this in Spanish?",
+                CorrectAnswer = w.Es,
+                OptionsJson = "[]",
+                HintText = $"In English: {w.En}"
+            },
+            // Reverse PictureMatch: show emoji, pick correct English
+            (w, all) =>
+            {
+                var wrong = all.Where(x => x.En != w.En).OrderBy(_ => Random.Shared.Next()).Take(3).Select(x => x.En).ToList();
+                wrong.Add(w.En);
+                return new Exercise
+                {
+                    Type = ExerciseType.PictureMatch,
+                    Question = $"{w.Img} What is this in English?",
+                    CorrectAnswer = w.En,
+                    OptionsJson = JsonSerializer.Serialize(wrong.OrderBy(_ => Random.Shared.Next())),
+                    ImageUrl = w.Img,
+                    HintText = w.Es
+                };
+            },
+            // Reverse Translate: Es → En (multiple choice)
+            (w, all) =>
+            {
+                var wrong = all.Where(x => x.En != w.En).OrderBy(_ => Random.Shared.Next()).Take(3).Select(x => x.En).ToList();
+                wrong.Add(w.En);
+                return new Exercise
+                {
+                    Type = ExerciseType.TranslateSentence,
+                    Question = $"What does \"{w.Es}\" mean in English?",
+                    CorrectAnswer = w.En,
+                    OptionsJson = JsonSerializer.Serialize(wrong.OrderBy(_ => Random.Shared.Next())),
+                    HintText = $"Telugu: {w.Te}"
+                };
+            },
+            // Telugu → English (multiple choice)
+            (w, all) =>
+            {
+                var wrong = all.Where(x => x.En != w.En).OrderBy(_ => Random.Shared.Next()).Take(3).Select(x => x.En).ToList();
+                wrong.Add(w.En);
+                return new Exercise
+                {
+                    Type = ExerciseType.TriFlipChallenge,
+                    Question = $"🇮🇳 Telugu: {w.Te} → What is this in English?",
+                    CorrectAnswer = w.En,
+                    OptionsJson = JsonSerializer.Serialize(wrong.OrderBy(_ => Random.Shared.Next())),
+                    HintText = $"Spanish: {w.Es}"
+                };
+            },
+            // FillInTheBlank: type English from Spanish
+            (w, _) => new Exercise
+            {
+                Type = ExerciseType.FillInTheBlank,
+                Question = $"\"{w.Es}\" in English is ____",
+                CorrectAnswer = w.En,
+                OptionsJson = "[]",
+                HintText = $"Starts with '{w.En[0]}'"
+            }
+        };
 
         for (int i = 0; i < words.Length; i += wordsPerLesson)
         {
             lessonIndex++;
             var lessonWords = words.Skip(i).Take(wordsPerLesson).ToArray();
-            var allWords = words;
 
             var exercises = new List<Exercise>();
 
+            // For each word, pick 2 unique exercise types (from 8 generators)
             foreach (var w in lessonWords)
             {
-                // PictureMatch: show emoji, pick correct English word
-                var wrongOptions = allWords.Where(x => x.En != w.En).OrderBy(_ => Random.Shared.Next()).Take(3)
-                    .Select(x => x.Es).ToList();
-                wrongOptions.Add(w.Es);
-                exercises.Add(new Exercise
-                {
-                    Type = ExerciseType.PictureMatch,
-                    Question = $"{w.Img} What is this in Spanish?",
-                    CorrectAnswer = w.Es,
-                    OptionsJson = JsonSerializer.Serialize(wrongOptions.OrderBy(_ => Random.Shared.Next())),
-                    ImageUrl = w.Img,
-                    HintText = w.En
-                });
+                var pickedGenerators = exerciseGenerators
+                    .OrderBy(_ => Random.Shared.Next())
+                    .Take(2)
+                    .ToList();
 
-                // TranslateSentence: En → Es
-                var wrongTrans = allWords.Where(x => x.En != w.En).OrderBy(_ => Random.Shared.Next()).Take(3)
-                    .Select(x => x.Es).ToList();
-                wrongTrans.Add(w.Es);
-                exercises.Add(new Exercise
+                foreach (var gen in pickedGenerators)
                 {
-                    Type = ExerciseType.TranslateSentence,
-                    Question = $"Translate to Spanish: \"{w.En}\"",
-                    CorrectAnswer = w.Es,
-                    OptionsJson = JsonSerializer.Serialize(wrongTrans.OrderBy(_ => Random.Shared.Next()))
-                });
-
-                // FillInTheBlank
-                exercises.Add(new Exercise
-                {
-                    Type = ExerciseType.FillInTheBlank,
-                    Question = $"The Spanish word for \"{w.En}\" is ____",
-                    CorrectAnswer = w.Es,
-                    OptionsJson = "[]",
-                    HintText = $"Starts with '{w.Es[0]}'"
-                });
-
-                // TriFlipChallenge: show Telugu, type Spanish
-                exercises.Add(new Exercise
-                {
-                    Type = ExerciseType.TriFlipChallenge,
-                    Question = $"🇮🇳 Telugu: {w.Te} → What is this in Spanish?",
-                    CorrectAnswer = w.Es,
-                    OptionsJson = "[]",
-                    HintText = $"In English: {w.En}"
-                });
+                    exercises.Add(gen(w, words));
+                }
             }
+
+            // Shuffle all exercises so same word doesn't appear back-to-back
+            exercises = exercises.OrderBy(_ => Random.Shared.Next()).ToList();
 
             lessons.Add(new Lesson
             {
