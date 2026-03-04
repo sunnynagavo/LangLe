@@ -27,7 +27,7 @@
 
 ### 🔢 Quick Stats
 
-**`10` Topics** · **`50` Lessons** · **`400` Exercises** · **`100` Trilingual Words** · **`3` Languages** · **`4` Exercise Types** · **`10` Achievements**
+**`20` Topics** · **`200` Lessons** · **`1600` Exercises** · **`400` Trilingual Words** · **`3` Languages** · **`4` Exercise Types** · **`10` Achievements**
 
 ---
 
@@ -79,10 +79,10 @@
 
 | Feature | Description |
 |---------|-------------|
-| **10 Topic Categories** | Greetings 👋, Numbers 🔢, Colors 🎨, Food & Drink 🍕, Family 👨‍👩‍👧‍👦, Animals 🐾, Travel ✈️, Shopping 🛍️, Weather ⛅, Time ⏰ |
-| **50 Structured Lessons** | 5 progressive lessons per topic, each with 8 exercises |
-| **400 Interactive Exercises** | Multiple Choice, Picture Match, Translation, Fill-in-the-Blank |
-| **100 Trilingual Words** | 10 words per topic in English, Spanish, and Telugu |
+| **10 → 20 Topic Categories** | Greetings 👋, Numbers 🔢, Colors 🎨, Food & Drink 🍕, Family 👨‍👩‍👧‍👦, Animals 🐾, Travel ✈️, Shopping 🛍️, Weather ⛅, Time ⏰, Body & Health 🏥, Clothing 👗, Emotions 😊, House & Home 🏠, School & Work 🎓, Sports & Hobbies ⚽, Nature 🌿, City Life 🏙️, Verbs & Actions 🏃, Descriptive Words 📝 |
+| **200 Structured Lessons** | 10 progressive lessons per topic, each with 8 exercises |
+| **1,600 Interactive Exercises** | Multiple Choice, Picture Match, Translation, Fill-in-the-Blank |
+| **400 Trilingual Words** | 20 words per topic in English, Spanish, and Telugu |
 | **Hint System** | Every exercise has a hint to keep learners from getting stuck |
 | **Progress Tracking** | Per-lesson completion with percentage bars and star ratings |
 
@@ -124,7 +124,7 @@
 </details>
 
 <details open>
-<summary><strong>📚 Learning Topics</strong> — 10 topic categories with emoji icons and progress bars</summary>
+<summary><strong>📚 Learning Topics</strong> — 20 topic categories with emoji icons and progress bars</summary>
 <br />
 <div align="center">
 <img src="docs/langleTopics.png" alt="LangLe Topics" width="700" />
@@ -174,7 +174,7 @@ LangLe is built on **.NET Aspire** — Microsoft's cloud-ready stack for distrib
 │    :17.6     │  • EF Core 10             │  • 8 Interactive Pages       │
 │  • langdb    │  • 13 REST Endpoints      │  • Custom Purple/Teal Theme  │
 │  • Persistent│  • Business Services      │  • Dark Mode Support         │
-│    Lifetime  │  • Seed Data (400 items)  │  • Responsive Layout         │
+│    Lifetime  │  • Seed Data (1600 items) │  • Responsive Layout         │
 │              │                           │                               │
 └──────────────┴───────────────────────────┴───────────────────────────────┘
 
@@ -237,7 +237,7 @@ LangLe/
 │   │   └── UserAchievement.cs                  # User ↔ Achievement unlock
 │   ├── Data/
 │   │   ├── LangLeDbContext.cs                  # EF Core context with Identity integration
-│   │   └── SeedData.cs                         # 10 topics, 100 words, 50 lessons, 400 exercises
+│   │   └── SeedData.cs                         # 20 topics, 400 words, 200 lessons, 1600 exercises
 │   └── Services/
 │       ├── LearningService.cs                  # Topics, lessons, exercises, completion logic
 │       └── DashboardService.cs                 # Stats aggregation, weekly XP, suggestions
@@ -339,10 +339,10 @@ LangLe/
 
 | Category | Count | Details |
 |----------|------:|---------|
-| **Topics** | 10 | Each with unique emoji and description |
-| **Words** | 100 | 10 trilingual words per topic (en/es/te) |
-| **Lessons** | 50 | 5 progressive lessons per topic |
-| **Exercises** | 400 | 8 exercises per lesson (mixed types) |
+| **Topics** | 20 | Each with unique emoji and description |
+| **Words** | 400 | 20 trilingual words per topic (en/es/te) |
+| **Lessons** | 200 | 10 progressive lessons per topic |
+| **Exercises** | 1,600 | 8 exercises per lesson (mixed types) |
 | **Achievements** | 10 | First Steps, Getting Started, Week Warrior, Vocabulary King, All Star, etc. |
 | **DB Tables** | 11 | Including ASP.NET Identity tables for auth |
 
@@ -491,7 +491,7 @@ Once running, Aspire will display URLs in the console:
 ```
 
 1. 🌐 Open `https://localhost:7176` in your browser
-2. 📚 Click **Browse Topics** to explore all 10 learning categories
+2. 📚 Click **Browse Topics** to explore all 20 learning categories
 3. 📝 Click any topic → select a lesson → start answering exercises!
 4. 👤 Click **Login** → **Register** to create an account for progress tracking
 5. 🏆 Complete lessons to earn XP, stars, streaks, and achievements
@@ -525,7 +525,7 @@ LangLe uses a custom **MudBlazor** theme with a playful, educational aesthetic:
 
 ## 📚 Trilingual Content Sample
 
-Here's a peek at the kind of content LangLe teaches across all 10 topics:
+Here's a peek at the kind of content LangLe teaches across all 20 topics:
 
 | Topic | 🇺🇸 English | 🇪🇸 Spanish | 🇮🇳 Telugu |
 |-------|-------------|-------------|------------|
@@ -540,6 +540,16 @@ Here's a peek at the kind of content LangLe teaches across all 10 topics:
 | 🛍️ Shopping | Money | Dinero | డబ్బు |
 | ⛅ Weather | Rain | Lluvia | వర్షం |
 | ⏰ Time | Today | Hoy | ఈరోజు |
+| 🏥 Body & Health | Heart | Corazón | గుండె |
+| 👗 Clothing | Shirt | Camisa | చొక్కా |
+| 😊 Emotions | Happy | Feliz | సంతోషం |
+| 🏠 House & Home | Kitchen | Cocina | వంటగది |
+| 🎓 School & Work | Book | Libro | పుస్తకం |
+| ⚽ Sports & Hobbies | Soccer | Fútbol | ఫుట్‌బాల్ |
+| 🌿 Nature | Flower | Flor | పువ్వు |
+| 🏙️ City Life | Street | Calle | వీధి |
+| 🏃 Verbs & Actions | Eat | Comer | తినడం |
+| 📝 Descriptive Words | Big | Grande | పెద్ద |
 
 ---
 
@@ -551,8 +561,8 @@ Here's a peek at the kind of content LangLe teaches across all 10 topics:
 - [x] ASP.NET Core API with 13 REST endpoints
 - [x] ASP.NET Identity authentication (register, login, logout)
 - [x] Blazor Server frontend with MudBlazor rich UI
-- [x] 10 learning topics with emoji icons
-- [x] 50 lessons × 8 exercises = 400 interactive exercises
+- [x] 20 learning topics with emoji icons
+- [x] 200 lessons × 8 exercises = 1,600 interactive exercises
 - [x] 4 exercise types (Multiple Choice, Picture Match, Translation, Fill-in-the-Blank)
 - [x] Trilingual content: English ↔ Spanish ↔ Telugu
 - [x] Gamification: XP, streaks, stars, achievements
@@ -589,8 +599,8 @@ Here's a peek at the kind of content LangLe teaches across all 10 topics:
 ```
 ┌─────────────┐     ┌──────────────┐     ┌──────────────┐     ┌─────────────┐
 │  Topics     │────>│  Lessons     │────>│  Exercises   │────>│ Completion  │
-│  (10 cards) │     │  (5 per topic│     │  (8 per      │     │  Screen     │
-│             │     │   in drawer) │     │   lesson)    │     │             │
+│  (20 cards) │     │  (10 per     │     │  (8 per      │     │  Screen     │
+│             │     │   topic      │     │   lesson)    │     │             │
 │  👋 🔢 🎨   │     │  Lesson 1    │     │  Q1: 📸     │     │  ⭐⭐⭐      │
 │  🍕 👨‍👩‍👧‍👦 🐾  │     │  Lesson 2    │     │  Q2: 🔤     │     │  +150 XP    │
 │  ✈️ 🛍️ ⛅  │     │  Lesson 3    │     │  Q3: 🌐     │     │  🔥 Streak! │

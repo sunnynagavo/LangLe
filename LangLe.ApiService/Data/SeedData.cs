@@ -32,7 +32,12 @@ public static class SeedData
                 ("good morning", "buenos días", "శుభోదయం", "🌅"), ("please", "por favor", "దయచేసి", "🙏"),
                 ("thank you", "gracias", "ధన్యవాదాలు", "🙏"), ("how are you", "¿cómo estás?", "మీరు ఎలా ఉన్నారు?", "😊"),
                 ("good night", "buenas noches", "శుభ రాత్రి", "🌙"), ("welcome", "bienvenido", "స్వాగతం", "🤗"),
-                ("sorry", "lo siento", "క్షమించండి", "😔"), ("yes", "sí", "అవును", "✅")
+                ("sorry", "lo siento", "క్షమించండి", "😔"), ("yes", "sí", "అవును", "✅"),
+                ("no", "no", "కాదు", "❌"), ("nice to meet you", "mucho gusto", "మిమ్మల్ని కలిసి సంతోషం", "🤝"),
+                ("see you later", "hasta luego", "తర్వాత కలుద్దాం", "👋"), ("good afternoon", "buenas tardes", "శుభ మధ్యాహ్నం", "🌤️"),
+                ("excuse me", "disculpe", "క్షమించండి", "🙇"), ("of course", "por supuesto", "తప్పకుండా", "💯"),
+                ("congratulations", "felicidades", "అభినందనలు", "🎉"), ("good luck", "buena suerte", "శుభం కలగాలి", "🍀"),
+                ("cheers", "salud", "ఆరోగ్యం", "🥂"), ("take care", "cuídate", "జాగ్రత్తగా ఉండు", "💙")
             }),
             ("Numbers", "Count from one to ten and beyond!", "🔢", new[]
             {
@@ -40,7 +45,12 @@ public static class SeedData
                 ("three", "tres", "మూడు", "3️⃣"), ("four", "cuatro", "నాలుగు", "4️⃣"),
                 ("five", "cinco", "ఐదు", "5️⃣"), ("six", "seis", "ఆరు", "6️⃣"),
                 ("seven", "siete", "ఏడు", "7️⃣"), ("eight", "ocho", "ఎనిమిది", "8️⃣"),
-                ("nine", "nueve", "తొమ్మిది", "9️⃣"), ("ten", "diez", "పది", "🔟")
+                ("nine", "nueve", "తొమ్మిది", "9️⃣"), ("ten", "diez", "పది", "🔟"),
+                ("eleven", "once", "పదకొండు", "🔢"), ("twelve", "doce", "పన్నెండు", "🔢"),
+                ("twenty", "veinte", "ఇరవై", "🔢"), ("thirty", "treinta", "ముప్పై", "🔢"),
+                ("fifty", "cincuenta", "యాభై", "🔢"), ("hundred", "cien", "వంద", "💯"),
+                ("thousand", "mil", "వెయ్యి", "🔢"), ("first", "primero", "మొదటి", "🥇"),
+                ("second", "segundo", "రెండవ", "🥈"), ("third", "tercero", "మూడవ", "🥉")
             }),
             ("Colors", "Learn all the colors of the rainbow!", "🎨", new[]
             {
@@ -48,7 +58,12 @@ public static class SeedData
                 ("green", "verde", "ఆకుపచ్చ", "🟢"), ("yellow", "amarillo", "పసుపు", "🟡"),
                 ("black", "negro", "నలుపు", "⚫"), ("white", "blanco", "తెలుపు", "⚪"),
                 ("orange", "naranja", "నారింజ", "🟠"), ("purple", "morado", "ఊదా", "🟣"),
-                ("pink", "rosa", "గులాబీ", "🩷"), ("brown", "marrón", "గోధుమ", "🟤")
+                ("pink", "rosa", "గులాబీ", "🩷"), ("brown", "marrón", "గోధుమ", "🟤"),
+                ("gray", "gris", "బూడిద", "🩶"), ("gold", "dorado", "బంగారం", "🌟"),
+                ("silver", "plateado", "వెండి", "🪙"), ("light blue", "celeste", "లేత నీలం", "💎"),
+                ("dark", "oscuro", "చీకటి", "🌑"), ("light", "claro", "వెలుతురు", "💡"),
+                ("bright", "brillante", "ప్రకాశవంతం", "✨"), ("colorful", "colorido", "రంగులమయం", "🌈"),
+                ("navy blue", "azul marino", "నేవీ నీలం", "🫐"), ("turquoise", "turquesa", "పచ్చని నీలం", "🧊")
             }),
             ("Food & Drink", "Delicious words to know!", "🍕", new[]
             {
@@ -56,7 +71,12 @@ public static class SeedData
                 ("milk", "leche", "పాలు", "🥛"), ("apple", "manzana", "ఆపిల్", "🍎"),
                 ("coffee", "café", "కాఫీ", "☕"), ("rice", "arroz", "అన్నం", "🍚"),
                 ("egg", "huevo", "గుడ్డు", "🥚"), ("chicken", "pollo", "కోడి", "🍗"),
-                ("fish", "pescado", "చేప", "🐟"), ("fruit", "fruta", "పండు", "🍇")
+                ("fish", "pescado", "చేప", "🐟"), ("fruit", "fruta", "పండు", "🍇"),
+                ("cheese", "queso", "చీజ్", "🧀"), ("meat", "carne", "మాంసం", "🥩"),
+                ("soup", "sopa", "సూప్", "🍲"), ("salad", "ensalada", "సలాడ్", "🥗"),
+                ("sugar", "azúcar", "పంచదార", "🍬"), ("salt", "sal", "ఉప్పు", "🧂"),
+                ("beer", "cerveza", "బీర్", "🍺"), ("wine", "vino", "వైన్", "🍷"),
+                ("ice cream", "helado", "ఐస్ క్రీం", "🍦"), ("cake", "pastel", "కేక్", "🎂")
             }),
             ("Family", "Meet the family!", "👨‍👩‍👧‍👦", new[]
             {
@@ -64,7 +84,12 @@ public static class SeedData
                 ("brother", "hermano", "అన్న", "👦"), ("sister", "hermana", "అక్క", "👧"),
                 ("son", "hijo", "కొడుకు", "👶"), ("daughter", "hija", "కూతురు", "👶"),
                 ("grandfather", "abuelo", "తాత", "👴"), ("grandmother", "abuela", "నానమ్మ", "👵"),
-                ("uncle", "tío", "మామ", "👨"), ("aunt", "tía", "పిన్ని", "👩")
+                ("uncle", "tío", "మామ", "👨"), ("aunt", "tía", "పిన్ని", "👩"),
+                ("cousin", "primo", "బంధువు", "🧑"), ("husband", "esposo", "భర్త", "💑"),
+                ("wife", "esposa", "భార్య", "💑"), ("baby", "bebé", "బిడ్డ", "👶"),
+                ("family", "familia", "కుటుంబం", "👨‍👩‍👧‍👦"), ("parents", "padres", "తల్లిదండ్రులు", "👫"),
+                ("children", "hijos", "పిల్లలు", "👧👦"), ("nephew", "sobrino", "మేనల్లుడు", "👦"),
+                ("niece", "sobrina", "మేనకోడలు", "👧"), ("godfather", "padrino", "గాడ్‌ఫాదర్", "🤵")
             }),
             ("Animals", "Adorable creatures everywhere!", "🐾", new[]
             {
@@ -72,7 +97,12 @@ public static class SeedData
                 ("bird", "pájaro", "పక్షి", "🐦"), ("fish", "pez", "చేప", "🐠"),
                 ("horse", "caballo", "గుర్రం", "🐴"), ("cow", "vaca", "ఆవు", "🐄"),
                 ("elephant", "elefante", "ఏనుగు", "🐘"), ("monkey", "mono", "కోతి", "🐒"),
-                ("rabbit", "conejo", "కుందేలు", "🐇"), ("lion", "león", "సింహం", "🦁")
+                ("rabbit", "conejo", "కుందేలు", "🐇"), ("lion", "león", "సింహం", "🦁"),
+                ("tiger", "tigre", "పులి", "🐅"), ("bear", "oso", "ఎలుగుబంటి", "🐻"),
+                ("snake", "serpiente", "పాము", "🐍"), ("butterfly", "mariposa", "సీతాకోకచిలుక", "🦋"),
+                ("frog", "rana", "కప్ప", "🐸"), ("turtle", "tortuga", "తాబేలు", "🐢"),
+                ("sheep", "oveja", "గొర్రె", "🐑"), ("pig", "cerdo", "పంది", "🐷"),
+                ("duck", "pato", "బాతు", "🦆"), ("wolf", "lobo", "తోడేలు", "🐺")
             }),
             ("Travel", "Explore the world!", "✈️", new[]
             {
@@ -80,7 +110,12 @@ public static class SeedData
                 ("map", "mapa", "మ్యాప్", "🗺️"), ("passport", "pasaporte", "పాస్‌పోర్ట్", "📕"),
                 ("train", "tren", "రైలు", "🚂"), ("bus", "autobús", "బస్సు", "🚌"),
                 ("taxi", "taxi", "టాక్సీ", "🚕"), ("ticket", "boleto", "టిక్కెట్", "🎫"),
-                ("beach", "playa", "బీచ్", "🏖️"), ("mountain", "montaña", "కొండ", "⛰️")
+                ("beach", "playa", "బీచ్", "🏖️"), ("mountain", "montaña", "కొండ", "⛰️"),
+                ("luggage", "equipaje", "సామాను", "🧳"), ("restaurant", "restaurante", "రెస్టారెంట్", "🍽️"),
+                ("museum", "museo", "మ్యూజియం", "🏛️"), ("hospital", "hospital", "ఆసుపత్రి", "🏥"),
+                ("pharmacy", "farmacia", "ఫార్మసీ", "💊"), ("bank", "banco", "బ్యాంక్", "🏦"),
+                ("police", "policía", "పోలీసు", "👮"), ("embassy", "embajada", "రాయబార కార్యాలయం", "🏛️"),
+                ("reservation", "reservación", "రిజర్వేషన్", "📋"), ("guide", "guía", "గైడ్", "🧭")
             }),
             ("Shopping", "Time to shop!", "🛍️", new[]
             {
@@ -88,7 +123,12 @@ public static class SeedData
                 ("money", "dinero", "డబ్బు", "💰"), ("cheap", "barato", "చౌక", "👍"),
                 ("expensive", "caro", "ఖరీదు", "💎"), ("buy", "comprar", "కొనుక్కోవడం", "🛒"),
                 ("sell", "vender", "అమ్మడం", "🏷️"), ("market", "mercado", "మార్కెట్", "🏬"),
-                ("bag", "bolsa", "సంచి", "👜"), ("size", "tamaño", "సైజు", "📏")
+                ("bag", "bolsa", "సంచి", "👜"), ("size", "tamaño", "సైజు", "📏"),
+                ("receipt", "recibo", "రసీదు", "🧾"), ("cash", "efectivo", "నగదు", "💵"),
+                ("credit card", "tarjeta de crédito", "క్రెడిట్ కార్డ్", "💳"), ("discount", "descuento", "తగ్గింపు", "🏷️"),
+                ("exchange", "cambio", "మార్పిడి", "🔄"), ("clothing", "ropa", "బట్టలు", "👕"),
+                ("shoes", "zapatos", "బూట్లు", "👟"), ("gift", "regalo", "బహుమతి", "🎁"),
+                ("open", "abierto", "తెరిచి ఉంది", "🔓"), ("closed", "cerrado", "మూసివేసి ఉంది", "🔒")
             }),
             ("Weather", "What's the weather like?", "⛅", new[]
             {
@@ -96,7 +136,12 @@ public static class SeedData
                 ("snow", "nieve", "మంచు", "❄️"), ("hot", "calor", "వేడి", "🔥"),
                 ("cold", "frío", "చలి", "🥶"), ("wind", "viento", "గాలి", "💨"),
                 ("cloud", "nube", "మేఘం", "☁️"), ("storm", "tormenta", "తుఫాను", "⛈️"),
-                ("rainbow", "arcoíris", "ఇంద్రధనుస్సు", "🌈"), ("temperature", "temperatura", "ఉష్ణోగ్రత", "🌡️")
+                ("rainbow", "arcoíris", "ఇంద్రధనుస్సు", "🌈"), ("temperature", "temperatura", "ఉష్ణోగ్రత", "🌡️"),
+                ("fog", "niebla", "పొగమంచు", "🌫️"), ("thunder", "trueno", "ఉరుము", "⚡"),
+                ("lightning", "relámpago", "మెరుపు", "🌩️"), ("humidity", "humedad", "తేమ", "💦"),
+                ("dry", "seco", "పొడి", "🏜️"), ("frost", "escarcha", "మంచుగడ్డ", "🧊"),
+                ("breeze", "brisa", "చల్లగాలి", "🍃"), ("sunny", "soleado", "ఎండగా", "🌞"),
+                ("cloudy", "nublado", "మేఘావృతం", "🌥️"), ("rainy", "lluvioso", "వర్షంతో", "🌦️")
             }),
             ("Time", "Every moment counts!", "⏰", new[]
             {
@@ -104,7 +149,142 @@ public static class SeedData
                 ("today", "hoy", "ఈరోజు", "📅"), ("tomorrow", "mañana", "రేపు", "📆"),
                 ("yesterday", "ayer", "నిన్న", "📋"), ("morning", "mañana", "ఉదయం", "🌅"),
                 ("afternoon", "tarde", "మధ్యాహ్నం", "🌤️"), ("night", "noche", "రాత్రి", "🌙"),
-                ("week", "semana", "వారం", "📊"), ("month", "mes", "నెల", "🗓️")
+                ("week", "semana", "వారం", "📊"), ("month", "mes", "నెల", "🗓️"),
+                ("year", "año", "సంవత్సరం", "📆"), ("second", "segundo", "సెకను", "⏰"),
+                ("clock", "reloj", "గడియారం", "🕰️"), ("early", "temprano", "ముందుగా", "🌄"),
+                ("late", "tarde", "ఆలస్యం", "🕐"), ("always", "siempre", "ఎల్లప్పుడూ", "♾️"),
+                ("never", "nunca", "ఎప్పటికీ కాదు", "🚫"), ("sometimes", "a veces", "కొన్నిసార్లు", "🔀"),
+                ("now", "ahora", "ఇప్పుడు", "⏳"), ("soon", "pronto", "త్వరలో", "🔜")
+            }),
+            ("Body & Health", "Know your body!", "🏥", new[]
+            {
+                ("head", "cabeza", "తల", "🗣️"), ("hand", "mano", "చేయి", "✋"),
+                ("eye", "ojo", "కన్ను", "👁️"), ("ear", "oreja", "చెవి", "👂"),
+                ("nose", "nariz", "ముక్కు", "👃"), ("mouth", "boca", "నోరు", "👄"),
+                ("heart", "corazón", "గుండె", "❤️"), ("stomach", "estómago", "కడుపు", "🫃"),
+                ("foot", "pie", "పాదం", "🦶"), ("arm", "brazo", "చేతి భుజం", "💪"),
+                ("leg", "pierna", "కాలు", "🦵"), ("back", "espalda", "వీపు", "🔙"),
+                ("teeth", "dientes", "దంతాలు", "🦷"), ("hair", "cabello", "జుట్టు", "💇"),
+                ("finger", "dedo", "వేలు", "☝️"), ("knee", "rodilla", "మోకాలు", "🦵"),
+                ("doctor", "doctor", "డాక్టర్", "👨‍⚕️"), ("medicine", "medicina", "మందు", "💊"),
+                ("pain", "dolor", "నొప్పి", "🤕"), ("healthy", "saludable", "ఆరోగ్యకరమైన", "💪")
+            }),
+            ("Clothing", "Dress to impress!", "👗", new[]
+            {
+                ("shirt", "camisa", "చొక్కా", "👔"), ("pants", "pantalones", "ప్యాంటు", "👖"),
+                ("dress", "vestido", "దుస్తులు", "👗"), ("hat", "sombrero", "టోపీ", "🎩"),
+                ("jacket", "chaqueta", "జాకెట్", "🧥"), ("shoes", "zapatos", "బూట్లు", "👟"),
+                ("socks", "calcetines", "సాక్సులు", "🧦"), ("skirt", "falda", "లంగా", "👗"),
+                ("coat", "abrigo", "కోటు", "🧥"), ("tie", "corbata", "టై", "👔"),
+                ("gloves", "guantes", "చేతి తొడుగులు", "🧤"), ("scarf", "bufanda", "మఫ్లర్", "🧣"),
+                ("belt", "cinturón", "బెల్ట్", "🪢"), ("boots", "botas", "బూట్లు", "🥾"),
+                ("uniform", "uniforme", "యూనిఫాం", "🎽"), ("sweater", "suéter", "స్వెటర్", "🧶"),
+                ("underwear", "ropa interior", "లోదుస్తులు", "🩲"), ("glasses", "gafas", "కళ్ళద్దాలు", "👓"),
+                ("watch", "reloj", "గడియారం", "⌚"), ("ring", "anillo", "ఉంగరం", "💍")
+            }),
+            ("Emotions", "Express how you feel!", "😊", new[]
+            {
+                ("happy", "feliz", "సంతోషం", "😊"), ("sad", "triste", "దుఃఖం", "😢"),
+                ("angry", "enojado", "కోపం", "😠"), ("scared", "asustado", "భయం", "😨"),
+                ("tired", "cansado", "అలసిపోయిన", "😴"), ("excited", "emocionado", "ఉత్సాహం", "🤩"),
+                ("nervous", "nervioso", "ఆందోళన", "😰"), ("surprised", "sorprendido", "ఆశ్చర్యం", "😲"),
+                ("bored", "aburrido", "విసుగు", "😐"), ("proud", "orgulloso", "గర్వం", "😤"),
+                ("love", "amor", "ప్రేమ", "❤️"), ("hope", "esperanza", "ఆశ", "🌟"),
+                ("fear", "miedo", "భయం", "😱"), ("joy", "alegría", "ఆనందం", "🥳"),
+                ("calm", "tranquilo", "ప్రశాంతం", "😌"), ("lonely", "solitario", "ఒంటరి", "🥺"),
+                ("grateful", "agradecido", "కృతజ్ఞత", "🙏"), ("jealous", "celoso", "అసూయ", "😒"),
+                ("confused", "confundido", "గందరగోళం", "😵"), ("curious", "curioso", "ఉత్సుకత", "🤔")
+            }),
+            ("House & Home", "Around the house!", "🏠", new[]
+            {
+                ("house", "casa", "ఇల్లు", "🏠"), ("room", "habitación", "గది", "🚪"),
+                ("kitchen", "cocina", "వంటగది", "🍳"), ("bedroom", "dormitorio", "పడకగది", "🛏️"),
+                ("bathroom", "baño", "బాత్రూమ్", "🚿"), ("door", "puerta", "తలుపు", "🚪"),
+                ("window", "ventana", "కిటికీ", "🪟"), ("table", "mesa", "బల్ల", "🪑"),
+                ("chair", "silla", "కుర్చీ", "💺"), ("bed", "cama", "మంచం", "🛏️"),
+                ("garden", "jardín", "తోట", "🌻"), ("roof", "techo", "పైకప్పు", "🏗️"),
+                ("floor", "piso", "నేల", "🏢"), ("stairs", "escaleras", "మెట్లు", "🪜"),
+                ("garage", "garaje", "గ్యారేజ్", "🅿️"), ("key", "llave", "తాళం", "🔑"),
+                ("lamp", "lámpara", "దీపం", "💡"), ("mirror", "espejo", "అద్దం", "🪞"),
+                ("sofa", "sofá", "సోఫా", "🛋️"), ("television", "televisión", "టీవీ", "📺")
+            }),
+            ("School & Work", "Learn and earn!", "🎓", new[]
+            {
+                ("school", "escuela", "పాఠశాల", "🏫"), ("teacher", "profesor", "ఉపాధ్యాయుడు", "👨‍🏫"),
+                ("student", "estudiante", "విద్యార్థి", "👩‍🎓"), ("book", "libro", "పుస్తకం", "📚"),
+                ("pen", "bolígrafo", "కలం", "🖊️"), ("paper", "papel", "కాగితం", "📄"),
+                ("class", "clase", "తరగతి", "🏫"), ("exam", "examen", "పరీక్ష", "📝"),
+                ("homework", "tarea", "ఇంటి పని", "📓"), ("computer", "computadora", "కంప్యూటర్", "💻"),
+                ("office", "oficina", "కార్యాలయం", "🏢"), ("meeting", "reunión", "సమావేశం", "🤝"),
+                ("boss", "jefe", "బాస్", "👔"), ("salary", "salario", "జీతం", "💰"),
+                ("job", "trabajo", "ఉద్యోగం", "💼"), ("email", "correo electrónico", "ఈమెయిల్", "📧"),
+                ("project", "proyecto", "ప్రాజెక్ట్", "📊"), ("team", "equipo", "జట్టు", "👥"),
+                ("phone", "teléfono", "ఫోన్", "📱"), ("calendar", "calendario", "క్యాలెండర్", "📅")
+            }),
+            ("Sports & Hobbies", "Stay active and have fun!", "⚽", new[]
+            {
+                ("soccer", "fútbol", "ఫుట్‌బాల్", "⚽"), ("basketball", "baloncesto", "బాస్కెట్‌బాల్", "🏀"),
+                ("tennis", "tenis", "టెన్నిస్", "🎾"), ("swimming", "natación", "ఈత", "🏊"),
+                ("running", "correr", "పరుగు", "🏃"), ("cycling", "ciclismo", "సైక్లింగ్", "🚴"),
+                ("dance", "baile", "నృత్యం", "💃"), ("music", "música", "సంగీతం", "🎵"),
+                ("painting", "pintura", "చిత్రకళ", "🎨"), ("reading", "lectura", "చదవడం", "📖"),
+                ("cooking", "cocinar", "వంట", "👨‍🍳"), ("photography", "fotografía", "ఫోటోగ్రఫీ", "📷"),
+                ("game", "juego", "ఆట", "🎮"), ("team", "equipo", "జట్టు", "👥"),
+                ("winner", "ganador", "విజేత", "🏆"), ("exercise", "ejercicio", "వ్యాయామం", "🏋️"),
+                ("yoga", "yoga", "యోగా", "🧘"), ("hiking", "senderismo", "హైకింగ్", "🥾"),
+                ("fishing", "pesca", "చేపలు పట్టడం", "🎣"), ("camping", "acampar", "క్యాంపింగ్", "🏕️")
+            }),
+            ("Nature", "Explore the natural world!", "🌿", new[]
+            {
+                ("tree", "árbol", "చెట్టు", "🌳"), ("flower", "flor", "పువ్వు", "🌸"),
+                ("river", "río", "నది", "🏞️"), ("ocean", "océano", "సముద్రం", "🌊"),
+                ("mountain", "montaña", "కొండ", "🏔️"), ("forest", "bosque", "అడవి", "🌲"),
+                ("sky", "cielo", "ఆకాశం", "🌌"), ("star", "estrella", "నక్షత్రం", "⭐"),
+                ("moon", "luna", "చంద్రుడు", "🌙"), ("earth", "tierra", "భూమి", "🌍"),
+                ("grass", "hierba", "గడ్డి", "🌿"), ("lake", "lago", "సరస్సు", "🏞️"),
+                ("desert", "desierto", "ఎడారి", "🏜️"), ("island", "isla", "దీవి", "🏝️"),
+                ("volcano", "volcán", "అగ్నిపర్వతం", "🌋"), ("waterfall", "cascada", "జలపాతం", "💦"),
+                ("rock", "roca", "రాయి", "🪨"), ("sand", "arena", "ఇసుక", "🏖️"),
+                ("leaf", "hoja", "ఆకు", "🍃"), ("seed", "semilla", "విత్తనం", "🌱")
+            }),
+            ("City Life", "Navigate the urban jungle!", "🏙️", new[]
+            {
+                ("city", "ciudad", "నగరం", "🏙️"), ("street", "calle", "వీధి", "🛣️"),
+                ("building", "edificio", "భవనం", "🏢"), ("park", "parque", "పార్కు", "🏞️"),
+                ("library", "biblioteca", "గ్రంథాలయం", "📚"), ("church", "iglesia", "చర్చి", "⛪"),
+                ("bridge", "puente", "వంతెన", "🌉"), ("traffic", "tráfico", "ట్రాఫిక్", "🚦"),
+                ("corner", "esquina", "మూల", "📐"), ("plaza", "plaza", "ప్లాజా", "🏛️"),
+                ("apartment", "apartamento", "అపార్ట్‌మెంట్", "🏬"), ("sidewalk", "acera", "ఫుట్‌పాత్", "🚶"),
+                ("subway", "metro", "మెట్రో", "🚇"), ("tower", "torre", "టవర్", "🗼"),
+                ("stadium", "estadio", "స్టేడియం", "🏟️"), ("cinema", "cine", "సినిమా", "🎬"),
+                ("hospital", "hospital", "ఆసుపత్రి", "🏥"), ("fire station", "estación de bomberos", "ఫైర్ స్టేషన్", "🚒"),
+                ("post office", "oficina de correos", "పోస్ట్ ఆఫీస్", "📮"), ("zoo", "zoológico", "జంతు ప్రదర్శనశాల", "🦁")
+            }),
+            ("Verbs & Actions", "Express what you do!", "🏃", new[]
+            {
+                ("eat", "comer", "తినడం", "🍽️"), ("drink", "beber", "తాగడం", "🥤"),
+                ("sleep", "dormir", "నిద్ర", "😴"), ("walk", "caminar", "నడవడం", "🚶"),
+                ("run", "correr", "పరుగెత్తడం", "🏃"), ("read", "leer", "చదవడం", "📖"),
+                ("write", "escribir", "రాయడం", "✍️"), ("speak", "hablar", "మాట్లాడటం", "🗣️"),
+                ("listen", "escuchar", "వినడం", "👂"), ("see", "ver", "చూడటం", "👀"),
+                ("open", "abrir", "తెరవడం", "📂"), ("close", "cerrar", "మూయడం", "📕"),
+                ("give", "dar", "ఇవ్వడం", "🎁"), ("take", "tomar", "తీసుకోవడం", "🤲"),
+                ("think", "pensar", "ఆలోచించడం", "🤔"), ("know", "saber", "తెలుసు", "💡"),
+                ("want", "querer", "కావాలి", "🙋"), ("need", "necesitar", "అవసరం", "❗"),
+                ("help", "ayudar", "సహాయం", "🆘"), ("work", "trabajar", "పని చేయడం", "💼")
+            }),
+            ("Descriptive Words", "Describe your world!", "📝", new[]
+            {
+                ("big", "grande", "పెద్ద", "🐘"), ("small", "pequeño", "చిన్న", "🐜"),
+                ("fast", "rápido", "వేగం", "⚡"), ("slow", "lento", "నెమ్మది", "🐌"),
+                ("new", "nuevo", "కొత్త", "✨"), ("old", "viejo", "పాత", "📜"),
+                ("good", "bueno", "మంచి", "👍"), ("bad", "malo", "చెడు", "👎"),
+                ("beautiful", "hermoso", "అందమైన", "🌹"), ("ugly", "feo", "అసహ్యమైన", "👹"),
+                ("tall", "alto", "పొడవైన", "🦒"), ("short", "bajo", "పొట్టి", "🐁"),
+                ("heavy", "pesado", "బరువైన", "🏋️"), ("easy", "fácil", "సులభం", "✅"),
+                ("difficult", "difícil", "కష్టం", "🧩"), ("clean", "limpio", "శుభ్రం", "🧹"),
+                ("dirty", "sucio", "మురికి", "🗑️"), ("strong", "fuerte", "బలమైన", "💪"),
+                ("weak", "débil", "బలహీనమైన", "🥀"), ("rich", "rico", "ధనవంతుడు", "💎")
             })
         };
 
@@ -214,7 +394,7 @@ public static class SeedData
         new() { Name = "Word Collector", Description = "Learn 50 words", IconEmoji = "🌟", CriteriaType = "words_learned", CriteriaValue = 50 },
         new() { Name = "Vocabulary King", Description = "Learn 100 words", IconEmoji = "👑", CriteriaType = "words_learned", CriteriaValue = 100 },
         new() { Name = "Topic Explorer", Description = "Complete your first topic", IconEmoji = "🗺️", CriteriaType = "topics_completed", CriteriaValue = 1 },
-        new() { Name = "All Star", Description = "Complete all topics", IconEmoji = "🏆", CriteriaType = "topics_completed", CriteriaValue = 10 },
+        new() { Name = "All Star", Description = "Complete all topics", IconEmoji = "🏆", CriteriaType = "topics_completed", CriteriaValue = 20 },
         new() { Name = "XP Hunter", Description = "Earn 1000 XP", IconEmoji = "💎", CriteriaType = "total_xp", CriteriaValue = 1000 }
     ];
 }
