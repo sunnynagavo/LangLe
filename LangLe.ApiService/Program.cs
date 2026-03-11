@@ -1,5 +1,6 @@
 using LangLe.ApiService.Data;
 using LangLe.ApiService.Models;
+using LangLe.ApiService.Options;
 using LangLe.ApiService.Services;
 using LangLe.Shared.DTOs;
 using Microsoft.AspNetCore.Identity;
@@ -39,8 +40,10 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 builder.Services.AddAuthorization();
+builder.Services.Configure<AiCoachOptions>(builder.Configuration.GetSection(AiCoachOptions.SectionName));
 builder.Services.AddScoped<LearningService>();
 builder.Services.AddScoped<DashboardService>();
+builder.Services.AddHttpClient<AiCoachService>();
 
 var app = builder.Build();
 
@@ -126,6 +129,57 @@ app.MapPost("/api/lessons/complete", async (LessonCompleteRequest req, ClaimsPri
     var user = await userManager.GetUserAsync(principal);
     if (user == null) return Results.Unauthorized();
     return Results.Ok(await svc.CompleteLessonAsync(user.Id, req));
+}).RequireAuthorization();
+
+app.MapPost("/api/lessons/coach", async (
+    AiCoachRequest req,
+    ClaimsPrincipal principal,
+    UserManager<AppUser> userManager,
+    AiCoachService svc,
+    CancellationToken cancellationToken) =>
+{
+    var user = await userManager.GetUserAsync(principal);
+    if (user == null) return Results.Unauthorized();
+
+    try
+    {
+        return Results.Ok(await svc.GetCoachResponseAsync(req, user, cancellationToken));
+    }
+    catch (ArgumentException ex)
+    {
+        return Results.Problem(
+            title: "Invalid AI coach request",
+            detail: ex.Message,
+            statusCode: StatusCodes.Status400BadRequest);
+    }
+    catch (KeyNotFoundException ex)
+    {
+        return Results.Problem(
+            title: "Exercise not found",
+            detail: ex.Message,
+            statusCode: StatusCodes.Status404NotFound);
+    }
+    catch (AiCoachConfigurationException ex)
+    {
+        return Results.Problem(
+            title: "LeLe AI Coach is unavailable",
+            detail: ex.Message,
+            statusCode: StatusCodes.Status503ServiceUnavailable);
+    }
+    catch (AiCoachResponseFormatException ex)
+    {
+        return Results.Problem(
+            title: "Unexpected AI coach response",
+            detail: ex.Message,
+            statusCode: StatusCodes.Status502BadGateway);
+    }
+    catch (HttpRequestException ex)
+    {
+        return Results.Problem(
+            title: "AI coach provider error",
+            detail: ex.Message,
+            statusCode: StatusCodes.Status502BadGateway);
+    }
 }).RequireAuthorization();
 
 // === DASHBOARD & DATA ===

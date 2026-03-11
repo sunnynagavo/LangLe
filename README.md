@@ -84,6 +84,7 @@
 | **1,600 Interactive Exercises** | Multiple Choice, Picture Match, Translation, Fill-in-the-Blank |
 | **400 Trilingual Words** | 20 words per topic in English, Spanish, and Telugu |
 | **Hint System** | Every exercise has a hint to keep learners from getting stuck |
+| **LeLe AI Coach** ✨ | Optional AI-powered smart hints, mistake explanations, and bonus examples during lessons |
 | **Progress Tracking** | Per-lesson completion with percentage bars and star ratings |
 
 ### 🏆 Gamification & Motivation
@@ -465,6 +466,25 @@ dotnet workload install aspire
 # 4. Run the application 🚀
 dotnet run --project LangLe.AppHost
 ```
+
+### ✨ Optional: Enable LeLe AI Coach
+
+The lesson page now includes an optional **LeLe AI Coach** that can:
+
+- give a smart hint before you answer
+- explain what went wrong after a mistake
+- generate a bonus example after a correct answer
+
+Configure the API project with an **OpenAI-compatible chat completions endpoint** by setting these values in user secrets or environment variables:
+
+```bash
+AiCoach__Enabled=true
+AiCoach__Endpoint=https://api.openai.com/v1/
+AiCoach__ApiKey=your-api-key
+AiCoach__Model=gpt-4o-mini
+```
+
+> 💡 You can point `AiCoach__Endpoint` at other OpenAI-compatible providers too. If the coach is not configured, LangLe shows a clear setup message instead of failing silently.
 
 ### 🌐 Access Points
 

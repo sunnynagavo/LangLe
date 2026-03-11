@@ -1,7 +1,14 @@
+using System.Net;
 using System.Net.Http.Json;
 using LangLe.Shared.DTOs;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LangLe.Web;
+
+public sealed record AiCoachCallResult(AiCoachResponse? Response, string? ErrorMessage)
+{
+    public bool IsSuccess => Response is not null && string.IsNullOrWhiteSpace(ErrorMessage);
+}
 
 public class ApiClient(HttpClient http)
 {
@@ -34,6 +41,37 @@ public class ApiClient(HttpClient http)
 
     public async Task<LessonCompleteResponse?> CompleteLessonAsync(LessonCompleteRequest req) =>
         await PostAsync<LessonCompleteResponse>("/api/lessons/complete", req);
+
+    public async Task<AiCoachCallResult> GetAiCoachAsync(AiCoachRequest req, CancellationToken cancellationToken = default)
+    {
+        try
+        {
+            using var response = await http.PostAsJsonAsync("/api/lessons/coach", req, cancellationToken);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var payload = await response.Content.ReadFromJsonAsync<AiCoachResponse>(cancellationToken: cancellationToken);
+                return payload is null
+                    ? new AiCoachCallResult(null, "LeLe AI Coach returned an empty response.")
+                    : new AiCoachCallResult(payload, null);
+            }
+
+            var problem = await response.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken: cancellationToken);
+            var errorMessage = response.StatusCode == HttpStatusCode.Unauthorized
+                ? "Sign in to use LeLe AI Coach."
+                : problem?.Detail ?? problem?.Title ?? $"LeLe AI Coach request failed with status {(int)response.StatusCode}.";
+
+            return new AiCoachCallResult(null, errorMessage);
+        }
+        catch (HttpRequestException ex)
+        {
+            return new AiCoachCallResult(null, $"Couldn't reach LeLe AI Coach: {ex.Message}");
+        }
+        catch (TaskCanceledException)
+        {
+            return new AiCoachCallResult(null, "LeLe AI Coach timed out. Please try again.");
+        }
+    }
 
     // Dashboard
     public async Task<DashboardDto?> GetDashboardAsync() =>
