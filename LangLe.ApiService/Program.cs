@@ -138,8 +138,7 @@ app.MapPost("/api/lessons/coach", async (
     AiCoachService svc,
     CancellationToken cancellationToken) =>
 {
-    var user = await userManager.GetUserAsync(principal);
-    if (user == null) return Results.Unauthorized();
+    var user = await userManager.GetUserAsync(principal) ?? new AppUser();
 
     try
     {
@@ -180,7 +179,7 @@ app.MapPost("/api/lessons/coach", async (
             detail: ex.Message,
             statusCode: StatusCodes.Status502BadGateway);
     }
-}).RequireAuthorization();
+});
 
 // === DASHBOARD & DATA ===
 app.MapGet("/api/dashboard", async (ClaimsPrincipal principal, UserManager<AppUser> userManager, DashboardService svc) =>

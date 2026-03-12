@@ -1,5 +1,6 @@
 using System.Net;
 using System.Net.Http.Json;
+using System.Text.Json;
 using LangLe.Shared.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,11 @@ public sealed record AiCoachCallResult(AiCoachResponse? Response, string? ErrorM
 
 public class ApiClient(HttpClient http)
 {
+    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web)
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
     // Auth
     public async Task<AuthResponse?> RegisterAsync(RegisterRequest req) =>
         await PostAsync<AuthResponse>("/api/auth/register", req);
@@ -47,19 +53,33 @@ public class ApiClient(HttpClient http)
         try
         {
             using var response = await http.PostAsJsonAsync("/api/lessons/coach", req, cancellationToken);
+            var responseBody = await response.Content.ReadAsStringAsync(cancellationToken);
 
             if (response.IsSuccessStatusCode)
             {
-                var payload = await response.Content.ReadFromJsonAsync<AiCoachResponse>(cancellationToken: cancellationToken);
+                if (string.IsNullOrWhiteSpace(responseBody))
+                {
+                    return new AiCoachCallResult(null, "LeLe AI Coach returned an empty response.");
+                }
+
+                AiCoachResponse? payload;
+                try
+                {
+                    payload = JsonSerializer.Deserialize<AiCoachResponse>(responseBody, JsonOptions);
+                }
+                catch (JsonException)
+                {
+                    return new AiCoachCallResult(null, "LeLe AI Coach returned an unexpected response.");
+                }
+
                 return payload is null
                     ? new AiCoachCallResult(null, "LeLe AI Coach returned an empty response.")
                     : new AiCoachCallResult(payload, null);
             }
 
-            var problem = await response.Content.ReadFromJsonAsync<ProblemDetails>(cancellationToken: cancellationToken);
             var errorMessage = response.StatusCode == HttpStatusCode.Unauthorized
                 ? "Sign in to use LeLe AI Coach."
-                : problem?.Detail ?? problem?.Title ?? $"LeLe AI Coach request failed with status {(int)response.StatusCode}.";
+                : ExtractProblemDetail(responseBody) ?? $"LeLe AI Coach request failed with status {(int)response.StatusCode}.";
 
             return new AiCoachCallResult(null, errorMessage);
         }
@@ -70,6 +90,30 @@ public class ApiClient(HttpClient http)
         catch (TaskCanceledException)
         {
             return new AiCoachCallResult(null, "LeLe AI Coach timed out. Please try again.");
+        }
+    }
+
+    private static string? ExtractProblemDetail(string responseBody)
+    {
+        if (string.IsNullOrWhiteSpace(responseBody))
+        {
+            return null;
+        }
+
+        var trimmed = responseBody.Trim();
+        if (trimmed.StartsWith('<'))
+        {
+            return null;
+        }
+
+        try
+        {
+            var problem = JsonSerializer.Deserialize<ProblemDetails>(trimmed, JsonOptions);
+            return problem?.Detail ?? problem?.Title;
+        }
+        catch (JsonException)
+        {
+            return null;
         }
     }
 
