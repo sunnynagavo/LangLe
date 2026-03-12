@@ -486,6 +486,19 @@ AiCoach__Model=gpt-4o-mini
 
 > 💡 You can point `AiCoach__Endpoint` at other OpenAI-compatible providers too. If the coach is not configured, LangLe shows a clear setup message instead of failing silently.
 
+### 🛠️ Optional: Work around IDE runner issues
+
+If Aspire shows an error like `no runner found for execution type 'IDE'`, your IDE integration is failing before LangLe itself starts.
+
+You can force LangLe to use a CLI-style executable fallback for the API and web projects:
+
+```bash
+LANGLE_USE_EXECUTABLE_PROJECT_RUNNER=true
+dotnet run --project LangLe.AppHost
+```
+
+This keeps the default `AddProject(...)` flow for normal environments, but gives Rider/other affected setups a repo-level fallback when the IDE runner is unavailable.
+
 ### 🌐 Access Points
 
 Once running, Aspire will display URLs in the console:
