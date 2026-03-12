@@ -1,15 +1,19 @@
 var builder = DistributedApplication.CreateBuilder(args);
 
-var configFallbackEnabled = bool.TryParse(
-    builder.Configuration["LangLe:UseExecutableProjectRunnerFallback"],
-    out var useConfiguredFallback) && useConfiguredFallback;
+var useExecutableProjectRunnerFallback = true;
 
-var useExecutableProjectRunnerFallback =
-    configFallbackEnabled ||
-    string.Equals(
+if (bool.TryParse(
         Environment.GetEnvironmentVariable("LANGLE_USE_EXECUTABLE_PROJECT_RUNNER"),
-        "true",
-        StringComparison.OrdinalIgnoreCase);
+        out var useFallbackFromEnvironment))
+{
+    useExecutableProjectRunnerFallback = useFallbackFromEnvironment;
+}
+else if (bool.TryParse(
+             builder.Configuration["LangLe:UseExecutableProjectRunnerFallback"],
+             out var useFallbackFromConfiguration))
+{
+    useExecutableProjectRunnerFallback = useFallbackFromConfiguration;
+}
 
 var postgres = builder.AddPostgres("postgres")
     .WithLifetime(ContainerLifetime.Persistent)
